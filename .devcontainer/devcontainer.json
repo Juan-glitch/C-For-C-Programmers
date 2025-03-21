@@ -1,0 +1,34 @@
+{
+    "name": "C/C++ Development Environment",
+    "build": {
+      "dockerfile": "Dockerfile",
+      "args": {
+        "IMAGE_NAME": "custom-cpp-dev-environment" // Nombre de la imagen Docker
+      }
+    },
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash",
+      "editor.formatOnSave": true,
+      "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true
+      }
+    },
+    "extensions": [
+      "ms-vscode.cpptools",             // Soporte principal para C/C++
+      "ms-vscode.cmake-tools",          // Herramientas de CMake
+      "twxs.cmake",                     // Resaltado de sintaxis de CMake
+      "mutantdino.resourcemonitor",     // Monitor de recursos en el contenedor
+      "ms-azuretools.vscode-docker",    // Extensión Docker para gestionar contenedores
+      "eamodio.gitlens",                // Mejoras visuales y funcionales para Git
+      "github.vscode-pull-request-github", // Integración con GitHub (opcional)
+      "editorconfig.editorconfig",      // Consistencia de estilo de código
+      "mhutchie.git-graph",             // Visualización gráfica de Git
+      "ms-vscode-remote.remote-containers" // Extensión para trabajar con contenedores remotos
+    ],
+    "postCreateCommand": "ccache --version && gcc --version", // Comprobar herramientas tras iniciar el contenedor
+    "workspaceFolder": "/workspace",
+    "remoteUser": "root",
+    "image": "my-cpp-environment-image" // Nombre adicional para la imagen (si no usas build args)
+  }
+  
