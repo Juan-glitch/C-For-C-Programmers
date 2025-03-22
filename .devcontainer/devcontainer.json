@@ -1,34 +1,58 @@
 {
-    "name": "C/C++ Development Environment",
-    "build": {
-      "dockerfile": "Dockerfile",
-      "args": {
-        "IMAGE_NAME": "custom-cpp-dev-environment" // Nombre de la imagen Docker
-      }
-    },
-    "settings": {
-      "terminal.integrated.shell.linux": "/bin/bash",
-      "editor.formatOnSave": true,
-      "files.exclude": {
-        "**/.git": true,
-        "**/.DS_Store": true
-      }
-    },
-    "extensions": [
-      "ms-vscode.cpptools",             // Soporte principal para C/C++
-      "ms-vscode.cmake-tools",          // Herramientas de CMake
-      "twxs.cmake",                     // Resaltado de sintaxis de CMake
-      "mutantdino.resourcemonitor",     // Monitor de recursos en el contenedor
-      "ms-azuretools.vscode-docker",    // Extensión Docker para gestionar contenedores
-      "eamodio.gitlens",                // Mejoras visuales y funcionales para Git
-      "github.vscode-pull-request-github", // Integración con GitHub (opcional)
-      "editorconfig.editorconfig",      // Consistencia de estilo de código
-      "mhutchie.git-graph",             // Visualización gráfica de Git
-      "ms-vscode-remote.remote-containers" // Extensión para trabajar con contenedores remotos
-    ],
-    "postCreateCommand": "ccache --version && gcc --version", // Comprobar herramientas tras iniciar el contenedor
-    "workspaceFolder": "/workspace",
-    "remoteUser": "root",
-    "image": "my-cpp-environment-image" // Nombre adicional para la imagen (si no usas build args)
-  }
-  
+  // Nombre del entorno que se mostrará en VS Code.
+  "name": "C/C++ Development Environment",
+
+  // Archivo(s) de Docker Compose que definen los servicios del entorno.
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
+
+  // Nombre del servicio definido en docker-compose.yml que se usará como contenedor principal.
+  "service": "cpp_dev",
+
+  // Directorio de trabajo dentro del contenedor. Aquí se montará tu código.
+  "workspaceFolder": "/app",
+
+  // Personalizaciones específicas para VS Code cuando se conecta al contenedor.
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Se configura la terminal integrada para usar bash en el contenedor.
+        "terminal.integrated.shell.linux": "/bin/bash",
+        // Se activa el formateo automático al guardar.
+        "editor.formatOnSave": true,
+        // Se excluyen del explorador los directorios o archivos especificados, por ejemplo .git o .DS_Store.
+        "files.exclude": {
+          "**/.git": true,
+          "**/.DS_Store": true
+        }
+      },
+      "extensions": [
+        "ms-vscode.cpptools",                        // Extensión para soporte en C/C++ (debugging, IntelliSense, etc.)
+        "ms-vscode.cmake-tools",                     // Herramientas para trabajar con CMake
+        "twxs.cmake",                                // Realce de sintaxis para archivos CMake
+        "mutantdino.resourcemonitor",                // Monitoriza los recursos usados en el contenedor
+        "ms-azuretools.vscode-docker",               // Funcionalidades para gestionar Docker desde VS Code
+        "eamodio.gitlens",                           // Mejora la integración con Git
+        "github.vscode-pull-request-github",         // Integración con GitHub (manejo de pull requests)
+        "editorconfig.editorconfig",                 // Aplica configuración de formateo basada en .editorconfig
+        "mhutchie.git-graph",                        // Visualiza el histórico de Git de forma gráfica
+        "ms-vscode-remote.remote-containers",        // Permite trabajar con entornos remotos basados en contenedores
+        "ms-python.python"                           // Extensión para trabajar con Python (útil para scripts de automatización)
+      ]
+    }
+  },
+
+  // Comando que se ejecuta luego de crear el contenedor, por ejemplo para verificar herramientas instaladas.
+  "postCreateCommand": "ccache --version && gcc --version",
+
+  // Usuario que se utilizará dentro del contenedor.
+  "remoteUser": "root",
+
+  // Montajes de volúmenes: se vinculan directorios o archivos locales a rutas dentro del contenedor.
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",      // Se monta el directorio raíz del proyecto en /app
+    "source=${localWorkspaceFolder}/.env,target=/app/.env,type=bind",                // Se monta el archivo .env (si existe) en /app/.env
+    "source=${localWorkspaceFolder}/src,target=/app/src,type=bind,consistency=cached"  // Se monta la carpeta src en /app/src
+  ]
+}
