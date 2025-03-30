@@ -28,17 +28,18 @@
         }
       },
       "extensions": [
-        "ms-vscode.cpptools",                        // Extensión para soporte en C/C++ (debugging, IntelliSense, etc.)
-        "ms-vscode.cmake-tools",                     // Herramientas para trabajar con CMake
-        "twxs.cmake",                                // Realce de sintaxis para archivos CMake
-        "mutantdino.resourcemonitor",                // Monitoriza los recursos usados en el contenedor
-        "ms-azuretools.vscode-docker",               // Funcionalidades para gestionar Docker desde VS Code
-        "eamodio.gitlens",                           // Mejora la integración con Git
-        "github.vscode-pull-request-github",         // Integración con GitHub (manejo de pull requests)
-        "editorconfig.editorconfig",                 // Aplica configuración de formateo basada en .editorconfig
-        "mhutchie.git-graph",                        // Visualiza el histórico de Git de forma gráfica
-        "ms-vscode-remote.remote-containers",        // Permite trabajar con entornos remotos basados en contenedores
-        "ms-python.python"                           // Extensión para trabajar con Python (útil para scripts de automatización)
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "twxs.cmake",
+        "mutantdino.resourcemonitor",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "editorconfig.editorconfig",
+        "mhutchie.git-graph",
+        "ms-vscode-remote.remote-containers",
+        "ms-python.python",
+        "ms-vscode.cpptools-extension-pack"
       ]
     }
   },
