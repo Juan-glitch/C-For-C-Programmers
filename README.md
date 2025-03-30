@@ -1,206 +1,126 @@
-[![Actions Status](https://github.com/filipdutescu/modern-cpp-template/workflows/MacOS/badge.svg)](https://github.com/filipdutescu/modern-cpp-template/actions)
-[![Actions Status](https://github.com/filipdutescu/modern-cpp-template/workflows/Windows/badge.svg)](https://github.com/filipdutescu/modern-cpp-template/actions)
-[![Actions Status](https://github.com/filipdutescu/modern-cpp-template/workflows/Ubuntu/badge.svg)](https://github.com/filipdutescu/modern-cpp-template/actions)
-[![codecov](https://codecov.io/gh/filipdutescu/modern-cpp-template/branch/master/graph/badge.svg)](https://codecov.io/gh/filipdutescu/modern-cpp-template)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/filipdutescu/modern-cpp-template)](https://github.com/filipdutescu/modern-cpp-template/releases)
+# **C++ For C Programmers, Part A** (los 5 módulos que la componen):
 
-# Modern C++ Template
 
-A quick C++ template for modern CMake projects, aimed to be an easy to use
-starting point.
 
-This is my personal take on such a type of template, thus I might not use the
-best practices or you might disagree with how I do things. Any and all feedback
-is greatly appreciated!
+# Apuntes y Ejercicios – Curso de C++ en Coursera
 
-## Features
+Este repositorio ha sido creado para acompañar el proceso de aprendizaje en el curso de C++ que estoy realizando en Coursera, en particular la especialización **C++ For C Programmers, Part A**. Aquí se recopilan apuntes, ejemplos y ejercicios conforme se avanza en cada módulo del curso. Actualmente, el directorio se organiza en función de los módulos vistos y en preparación para los contenidos de la especialización.
 
-* Modern **CMake** configuration and project, which, to the best of my
-knowledge, uses the best practices,
+## Estructura del Proyecto
 
-* An example of a **Clang-Format** config, inspired from the base *Google* model,
-with minor tweaks. This is aimed only as a starting point, as coding style
-is a subjective matter, everyone is free to either delete it (for the *LLVM*
-default) or supply their own alternative,
-
-* **Static analyzers** integration, with *Clang-Tidy* and *Cppcheck*, the former
-being the default option,
-
-* **Doxygen** support, through the `ENABLE_DOXYGEN` option, which you can enable
-if you wish to use it,
-
-* **Unit testing** support, through *GoogleTest* (with an option to enable
-*GoogleMock*) or *Catch2*,
-
-* **Code coverage**, enabled by using the `ENABLE_CODE_COVERAGE` option, through
-*Codecov* CI integration,
-
-* **Package manager support**, with *Conan* and *Vcpkg*, through their respective
-options
-
-* **CI workflows for Windows, Linux and MacOS** using *GitHub Actions*, making
-use of the caching features, to ensure minimum run time,
-
-* **.md templates** for: *README*, *Contributing Guideliness*,
-*Issues* and *Pull Requests*,
-
-* **Permissive license** to allow you to integrate it as easily as possible. The
-template is licensed under the [Unlicense](https://unlicense.org/),
-
-* Options to build as a header-only library or executable, not just a static or
-shared library.
-
-* **Ccache** integration, for speeding up rebuild times
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local
-machine for development and testing purposes.
-
-### Prerequisites
-
-This project is meant to be only a template, thus versions of the software used
-can be change to better suit the needs of the developer(s). If you wish to use the
-template *as-is*, meaning using the versions recommended here, then you will need:
-
-* **CMake v3.15+** - found at [https://cmake.org/](https://cmake.org/)
-
-* **C++ Compiler** - needs to support at least the **C++17** standard, i.e. *MSVC*,
-*GCC*, *Clang*
-
-> ***Note:*** *You also need to be able to provide ***CMake*** a supported
-[generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html).*
-
-### Installing
-
-It is fairly easy to install the project, all you need to do is clone if from
-[GitHub](https://github.com/filipdutescu/modern-cpp-template) or
-[generate a new repository from it](https://github.com/filipdutescu/modern-cpp-template/generate)
-(also on **GitHub**).
-
-If you wish to clone the repository, rather than generate from it, you simply need
-to run:
-
-```bash
-git clone https://github.com/filipdutescu/modern-cpp-template/
+```
+app
+├── .devcontainer
+├── .env
+├── .github
+│   ├── ISSUE_TEMPLATE
+│   └── workflows
+├── .vscode
+├── cmake
+├── resources
+├── src
+│   ├── Module 1
+│   │   └── test_1_sumador
+│   │       ├── sumador.c
+│   │       ├── sumador.cpp
+│   │       └── sumador_v2_template.cpp
+│   ├── Module 2
+│   │   ├── comprension_structura.cpp
+│   │   └── uso_template.cpp
+│   ├── common
+│   └── tmp.cpp
+└── test
+    └── src
+        └── tmp_test.cpp
 ```
 
-After finishing getting a copy of the project, with any of the methods above, create
-a new folder in the `include/` folder, with the name of your project.  Edit
-`cmake/SourcesAndHeaders.cmake` to add your files.
+### Descripción de Directorios
 
-You will also need to rename the `cmake/ProjectConfig.cmake.in` file to start with
-the ***exact name of your project***. Such as `cmake/MyNewProjectConfig.cmake.in`.
-You should also make the same changes in the GitHub workflows provided, notably
-[`.github/workflows/ubuntu.yml`](.github/workflows/ubuntu.yml), in which you should
-replace the CMake option `-DProject_ENABLE_CODE_COVERAGE=1` to
-`-DMyNewProject_ENABLE_CODE_COVERAGE=1`.
+- **app**: Contiene la configuración del entorno (Docker, VSCode, GitHub Actions, etc.).
+- **src**: Código fuente organizado en módulos:
+  - **Module 1**: Ejercicios iniciales (ej. implementación de un sumador en C y C++).  
+    - `sumador.c`: Versión en C.  
+    - `sumador.cpp` y `sumador_v2_template.cpp`: Versiones en C++ con ejemplos de templates.
+  - **Module 2**: Ejercicios del módulo actual:
+    - `comprension_structura.cpp`: Ejemplo enfocado en la comprensión y manipulación de estructuras.
+    - `uso_template.cpp`: Ejemplo práctico del uso de templates en C++.
+  - **common**: Funciones y código reutilizable entre módulos.
+  - `tmp.cpp`: Archivo para pruebas y experimentación.
+- **test**: Pruebas unitarias y ejemplos de testing (por ejemplo, `tmp_test.cpp`).
 
-Finally, change `"Project"` from `CMakeLists.txt`, from
+## Contenido del Curso: C++ For C Programmers, Part A
 
-```cmake
-project(
-  "Project"
-  VERSION 0.1.0
-  LANGUAGES CXX
-)
-```
+Esta especialización (ofrecida por la Universidad de California, Santa Cruz) está compuesta por 5 módulos. A continuación, se detalla brevemente el contenido que se aborda en cada uno:
 
-to the ***exact name of your project***, i.e. using the previous name it will become:
+### Módulo 1: Conversión de Programas en C a C++
 
-```cmake
-project(
-  MyNewProject
-  VERSION 0.1.0
-  LANGUAGES CXX
-)
-```
+- **Objetivo:** Aprender a convertir programas escritos en C a C++.
+- **Contenido:**
+  - Introducción y organización del curso.
+  - Cómo convertir un programa en C a C++.
+  - Uso de la entrada/salida con seguridad en C++.
+  - Ventajas y mejoras de C++ frente a C.
+  - Ejercicios prácticos de conversión y adaptación del código.  
 
-To install an already built project, you need to run the `install` target with CMake.
-For example:
+### Módulo 2: Funciones, Templates y Estructuras de Datos
 
-```bash
-cmake --build build --target install --config Release
+- **Objetivo:** Introducir conceptos de funciones genéricas (templates) y estructuras de datos.
+- **Contenido:**
+  - Revisión del algoritmo de Dijkstra y su aplicación a estructuras de datos.
+  - Definición y uso de funciones en C++.
+  - Introducción a templates (funciones y clases genéricas).
+  - Ejemplos prácticos usando estructuras como "Point" para modelar datos.  
 
-# a more general syntax for that command is:
-cmake --build <build_directory> --target install --config <desired_config>
-```
+### Módulo 3: Programación Orientada a Objetos y Gestión de Memoria
 
-## Building the project
+- **Objetivo:** Consolidar la programación orientada a objetos y el manejo adecuado de la memoria.
+- **Contenido:**
+  - Introducción a clases y objetos en C++.
+  - Uso de constructores, constructores de copia y destructores.
+  - Diferencias entre copia superficial y copia profunda (shallow vs. deep copy).
+  - Gestión de listas y asignación dinámica de memoria.
+  - Prácticas sobre inicialización de objetos y manejo de recursos.
 
-To build the project, all you need to do, ***after correctly
-[installing the project](README.md#Installing)***, is run a similar **CMake** routine
-to the the one below:
+### Módulo 4: Algoritmos Avanzados y Uso de la STL
 
-```bash
-mkdir build/ && cd build/
-cmake .. -DCMAKE_INSTALL_PREFIX=/absolute/path/to/custom/install/directory
-cmake --build . --target install
-```
+- **Objetivo:** Profundizar en algoritmos avanzados y familiarizarse con la Standard Template Library (STL).
+- **Contenido:**
+  - Implementación de algoritmos de Prim y Kruskal para árboles generadores mínimos.
+  - Uso de contenedores básicos de la STL (vectores, listas, etc.).
+  - Introducción a iteradores y a las funcionalidades de la STL.
+  - Empleo de características de C++11 (auto, for-each, etc.) para escribir código más conciso.
+  - Ejercicios prácticos para afianzar estos conceptos.
 
-> ***Note:*** *The custom ``CMAKE_INSTALL_PREFIX`` can be omitted if you wish to
-install in [the default install location](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html).*
+### Módulo 5: Evaluación Final y Práctica
 
-More options that you can set for the project can be found in the
-[`cmake/StandardSettings.cmake` file](cmake/StandardSettings.cmake). For certain
-options additional configuration may be needed in their respective `*.cmake` files
-(i.e. Conan needs the `CONAN_REQUIRES` and might need the `CONAN_OPTIONS` to be setup
-for it work correctly; the two are set in the [`cmake/Conan.cmake` file](cmake/Conan.cmake)).
+- **Objetivo:** Evaluar y consolidar todo lo aprendido en la especialización.
+- **Contenido:**
+  - Examen final y práctica integral de todos los conceptos vistos.
+  - Ejercicios y proyectos finales.
+  - Retroalimentación y peer review para mejorar y validar los conocimientos adquiridos.
 
-## Generating the documentation
+Puedes revisar el contenido oficial del Módulo 2 de la especialización en el siguiente enlace:  
+[Module 2 – Curso de C++ en Coursera](https://www.coursera.org/learn/c-plus-plus-a/home/module/2) 
 
-In order to generate documentation for the project, you need to configure the build
-to use Doxygen. This is easily done, by modifying the workflow shown above as follows:
+## Cómo Navegar y Usar Este Repositorio
 
-```bash
-mkdir build/ && cd build/
-cmake .. -D<project_name>_ENABLE_DOXYGEN=1 -DCMAKE_INSTALL_PREFIX=/absolute/path/to/custom/install/directory
-cmake --build . --target doxygen-docs
-```
+- **Navegación por Módulos:**
+  - **Module 1 (src/Module 1):** Contiene ejercicios y ejemplos del primer módulo, enfocados en la conversión de programas en C a C++.
+  - **Module 2 (src/Module 2):** Contiene ejemplos actuales relacionados con la comprensión de estructuras y el uso de templates, reflejando los temas del Módulo 2 del curso.
+- **Pruebas y Experimentación:**
+  - Utiliza `tmp.cpp` para realizar pruebas o desarrollar nuevas ideas.
+  - El directorio `test` incluye ejemplos de pruebas unitarias para validar tu código.
 
-> ***Note:*** *This will generate a `docs/` directory in the **project's root directory**.*
+## Consideraciones Adicionales
 
-## Running the tests
+- **Entorno Docker:** El proyecto está configurado para ejecutarse dentro de un contenedor Docker, lo que garantiza que el entorno de desarrollo se mantenga consistente en diferentes máquinas.
+- **Actualización Continua:** A medida que avances en el curso, se recomienda actualizar este documento o crear nuevas secciones para reflejar los nuevos aprendizajes y prácticas.
+- **Referencia al Curso:** Siempre es útil contrastar tus apuntes con el contenido oficial del curso en Coursera para profundizar en conceptos y resolver dudas.
 
-By default, the template uses [Google Test](https://github.com/google/googletest/)
-for unit testing. Unit testing can be disabled in the options, by setting the
-`ENABLE_UNIT_TESTING` (from
-[cmake/StandardSettings.cmake](cmake/StandardSettings.cmake)) to be false. To run
-the tests, simply use CTest, from the build directory, passing the desire
-configuration for which to run tests for. An example of this procedure is:
+## Conclusión
 
-```bash
-cd build          # if not in the build directory already
-ctest -C Release  # or `ctest -C Debug` or any other configuration you wish to test
+Este repositorio es una herramienta viva para organizar mis apuntes y ejercicios del curso. Con una estructura clara y documentada, permite retomar el estudio en cualquier momento y sirve de guía tanto para mí como para cualquier persona que desee aprender C++ siguiendo esta metodología.
 
-# you can also run tests with the `-VV` flag for a more verbose output (i.e.
-#GoogleTest output as well)
-```
+---
 
-### End to end tests
-
-If applicable, should be presented here.
-
-### Coding style tests
-
-If applicable, should be presented here.
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our how you can
-become a contributor and the process for submitting pull requests to us.
-
-## Versioning
-
-This project makes use of [SemVer](http://semver.org/) for versioning. A list of
-existing versions can be found in the
-[project's releases](https://github.com/filipdutescu/modern-cpp-template/releases).
-
-## Authors
-
-* **Filip-Ioan Dutescu** - [@filipdutescu](https://github.com/filipdutescu)
-
-## License
-
-This project is licensed under the [Unlicense](https://unlicense.org/) - see the
-[LICENSE](LICENSE) file for details
+¡Espero que este README te sea de gran ayuda para seguir tu progreso en el curso y para que, en futuras consultas, puedas retomar el estudio y la práctica de cada módulo de manera ordenada y clara!
