@@ -119,6 +119,16 @@ RUN echo "Instalando vcpkg..." && \
     rm -rf vcpkg/.git
 
 # --------------------------------------------------------------------------------
+# Instalar gdb para depurar programas en C++
+# --------------------------------------------------------------------------------
+RUN apt-get update && apt-get install -y gdb
+
+# --------------------------------------------------------------------------------
+# Limpiar archivos innecesarios para hacer el contenedor más ligero
+# --------------------------------------------------------------------------------
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# --------------------------------------------------------------------------------
 # Establecer el directorio de trabajo para el código fuente.
 # --------------------------------------------------------------------------------
 WORKDIR /workspace
