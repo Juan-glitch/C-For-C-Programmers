@@ -11,10 +11,9 @@ const float INFINITO = numeric_limits<float>::max();
 class punto
 {
 private:
+public:
     char nodo;
     float distancia;
-
-public:
     // Constructor por defecto
     punto() : nodo(' '), distancia(0.0)
     {
@@ -59,18 +58,37 @@ private:
 public:
     punto nodo_inicial;
     punto nodo_final;
+    map<char, vector<punto>> grafo; // Grafo representado como un mapa de nodos y sus conexiones
     // Constructor por defecto
     Dijkstra(const punto &inicial, const punto &final, const map<char, vector<punto>> &grafo)
-        : nodo_inicial(inicial), nodo_final(final) {}
-
-    void inicializar()
     {
-        map<char, punto> distancias;
+        this->nodo_inicial = inicial;
+        this->nodo_final = final;
+        this->grafo = grafo;
+    }
+
+    void inicializarDistancias()
+    {
+        /**
+         * Inicializa las distancias de los nodos en el grafo.
+         *
+         * Este método establece la distancia de cada nodo a infinito, excepto para el nodo inicial,
+         * que se establece a 0. Esto prepara el grafo para el cálculo de las distancias más cortas
+         * usando el algoritmo de Dijkstra.
+         */
+        // ChatGPT: Explicame el uso de esta propiedad de constt auto. No puedo llamar simplemente usando
+        // for(const &nodo : grafo)
         for (const auto &nodo : grafo)
         {
-            distancias[nodo.first] = punto(nodo.first, INFINITO); // Cada nodo comienza con distancia infinita.
+            if (nodo.first == nodo_inicial.nodo)
+            {
+                distancias[nodo_inicial.nodo] = punto(nodo_inicial.nodo, 0.0); // El nodo inicial tiene distancia 0.
+            }
+            else
+            {
+                distancias[nodo.first] = punto(nodo.first, INFINITO); // Cada nodo comienza con distancia infinita.
+            }
         }
-        distancias[nodo_inicial.nodo] = punto(nodo_inicial.nodo, 0.0); // El nodo inicial tiene distancia 0.
     }
     vector<punto> calcularDistancias(const map<char, vector<punto>> grafo)
     {
