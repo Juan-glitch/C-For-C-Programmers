@@ -1,32 +1,32 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <limits> // Para usar valores máximos y minimos
+#include <limits> // Para usar valores máximos y mínimos
 #include <set>
+#include <algorithm> // Para reverse()
 
 using namespace std;
+
 // Definir el infinito como una constante
 const float INFINITO = numeric_limits<float>::max();
-/* Definición de la clase Punto */
+
+// Definición de la clase Punto
 class punto
 {
-private:
 public:
     char nodo;
     float distancia;
+
     // Constructor por defecto
     punto() : nodo(' '), distancia(0.0) {}
 
     // Constructor parametrizado
     punto(char n, float d) : nodo(n), distancia(d) {}
 
-    // Sobrecarga del operador suma
+    // Sobrecarga del operador suma (no es esencial para Dijkstra)
     punto operator+(const punto &other) const
     {
-        punto resultado;
-        resultado.nodo = this->nodo;                             // Mantiene el nodo actual.
-        resultado.distancia = this->distancia + other.distancia; // Suma las distancias.
-        return resultado;
+        return punto(nodo, distancia + other.distancia);
     }
 
     // Sobrecarga del operador istream (>>) para entrada formateada
@@ -50,31 +50,41 @@ public:
 class Dijkstra
 {
 private:
-    map<char, punto> distancias; // Guarda las distancias más cortas
-    set<char> visitados;         // Conjunto de nodos ya visitados
+    // Mapa de distancias más cortas a cada nodo
+    map<char, punto> distancias;
+    // Conjunto de nodos ya visitados
+    set<char> visitados;
+    // Mapa para guardar el nodo previo de cada nodo en la ruta óptima
+    map<char, char> predecesores;
+
 public:
+    // Nodo inicial y final
     punto nodo_inicial;
     punto nodo_final;
-    map<char, vector<punto>> grafo; // Grafo representado como un mapa de nodos y sus conexiones
-    // Constructor por defecto
+
+    // Grafo representado como un mapa: cada clave es un nodo, y su valor es un vector de "punto"
+    // que representa las conexiones: (nodo adyacente, costo)
+    map<char, vector<punto>> grafo;
+
+    // Constructor
     Dijkstra(const punto &inicial, const punto &final, const map<char, vector<punto>> &grafo)
-    {
-        this->nodo_inicial = inicial;
-        this->nodo_final = final;
-        this->grafo = grafo;
-    }
+        : nodo_inicial(inicial), nodo_final(final), grafo(grafo) {}
+
+    // Función para imprimir el grafo
     void imprimirGrafo()
     {
         for (const auto &nodo : grafo)
         {
-            cout << "Nodo: " << nodo.first << " Conexiones: " << endl;
+            cout << "Nodo: " << nodo.first << " Conexiones:" << endl;
             for (const auto &conexion : nodo.second)
             {
-                cout << "[" << conexion.nodo << ", " << conexion.distancia << "] " << endl;
+                cout << "  [" << conexion.nodo << ", " << conexion.distancia << "]" << endl;
             }
             cout << endl;
         }
     }
+
+    // Muestra los nodos visitados
     void mostrarVisitados()
     {
         cout << "Nodos visitados: ";
@@ -84,96 +94,156 @@ public:
         }
         cout << endl;
     }
+
+    // Inicializa las distancias: 0 para el nodo inicial y ∞ para el resto
     void inicializarDistancias()
     {
         for (const auto &nodo : grafo)
         {
             char clave = nodo.first;
-            this->distancias[clave] = (clave == nodo_inicial.nodo) ? punto(clave, 0.0) : punto(clave, INFINITO);
+            distancias[clave] = (clave == nodo_inicial.nodo) ? punto(clave, 0.0) : punto(clave, INFINITO);
         }
     }
+
+    // Muestra las distancias actuales a cada nodo
     void mostrarDistancias()
     {
         for (const auto &par : distancias)
         {
-            cout << "Clave: " << par.first << ", Distancia: " << par.second.distancia << endl;
+            cout << "Nodo: " << par.first << ", Distancia: " << par.second.distancia << endl;
         }
     }
-    vector<punto> calcularDistancias()
+
+    // Devuelve el nodo no visitado con la menor distancia provisional
+    char obtenerNodoMinimo()
     {
-        visitados.insert(nodo_inicial.nodo);
-        // Para cada nodo (clave) que aún no se ha visitado:
-        for (const auto &clave : distancias)
+        float minValor = INFINITO;
+        char nodoMin = ' ';
+        for (const auto &par : distancias)
         {
-            cout << "Procesando clave: " << clave.first << endl;
-            // Si ya está visitada la clave, la saltamos
-            if (visitados.find(clave.first) != visitados.end())
-                continue;
-
-            bool conectado = false;       // Bandera que indica si el nodo tiene conexión con algún nodo visitado
-            float mejorCamino = INFINITO; // Inicializamos con infinito para luego comparar los caminos
-
-            // Recorremos todos los subnodos (conexiones) de la clave actual:
-            for (const auto &subnodo : grafo[clave.first])
+            if (visitados.find(par.first) == visitados.end() && par.second.distancia < minValor)
             {
-                // Verificamos si podemos acceder a ese subnodo de algun nodo visitado
-                if (visitados.find(subnodo.nodo) != visitados.end())
-                {
-                }
-                // Verificamos si este subnodo (su identificador) se encuentra en el conjunto de visitados
-                if (visitados.find(subnodo.nodo) != visitados.end())
-                {
-                    conectado = true;
-
-                    // Calculamos el camino potencial: distancia hasta el subnodo + costo del enlace
-                    float caminoPotencial = distancias[subnodo.nodo].distancia + subnodo.distancia;
-
-                    // Actualizamos si encontramos un camino mejor:
-                    if (caminoPotencial < mejorCamino)
-                        mejorCamino = caminoPotencial;
-                }
-                // Si el subnodo no esta conectado pero enlaza
+                minValor = par.second.distancia;
+                nodoMin = par.first;
             }
-
-            // Si el nodo está conectado a algún nodo visitado, actualizamos su distancia
-            if (conectado && mejorCamino < clave.second.distancia)
-            {
-                // Aquí asignarías la nueva distancia al nodo actual
-                // Por ejemplo:
-                // distancias[clave.first].distancia = mejorCamino;
-                // Además podrías, en este punto, marcar el nodo como visitado, si corresponde según la lógica de tu algoritmo.
-            }
-            // De lo contrario, si 'conectado' es false, significa que ningún subnodo de esta clave está conectado a los visitados,
-            // por lo que no consideramos este nodo para actualización en esta iteración.
         }
-        return vector<punto>();
+        return nodoMin;
+    }
+
+    // Reconstruye el camino óptimo desde el nodo final al inicial usando los predecesores
+    vector<char> reconstruirCamino()
+    {
+        vector<char> camino;
+        char nodoActual = nodo_final.nodo;
+        while (nodoActual != nodo_inicial.nodo)
+        {
+            camino.push_back(nodoActual);
+            // Si no se encontró predecesor, significa que no existe camino
+            if (predecesores.find(nodoActual) == predecesores.end())
+            {
+                return vector<char>(); // Camino vacío indica error
+            }
+            nodoActual = predecesores[nodoActual];
+        }
+        camino.push_back(nodo_inicial.nodo);
+        reverse(camino.begin(), camino.end());
+        return camino;
+    }
+
+    // Función que ejecuta el algoritmo Dijkstra, contando iteraciones y actualizando predecesores
+    void calcularDistancias()
+    {
+        int iteracion = 0;
+        while (visitados.size() < distancias.size())
+        {
+            // Seleccionamos el nodo con la mínima distancia entre los no visitados
+            char actual = obtenerNodoMinimo();
+            if (actual == ' ')
+                break; // No quedan nodos alcanzables
+
+            visitados.insert(actual);
+            iteracion++;
+            cout << "Iteración " << iteracion << ": Nodo " << actual << " seleccionado." << endl;
+
+            // Si llegamos al nodo final, podemos detenernos
+            if (actual == nodo_final.nodo)
+            {
+                cout << "Nodo final alcanzado." << endl;
+                break;
+            }
+
+            // Analiza las aristas del nodo actual
+            for (const auto &conexion : grafo[actual])
+            {
+                if (visitados.find(conexion.nodo) == visitados.end())
+                {
+                    float nuevaDistancia = distancias[actual].distancia + conexion.distancia;
+                    if (nuevaDistancia < distancias[conexion.nodo].distancia)
+                    {
+                        distancias[conexion.nodo].distancia = nuevaDistancia;
+                        predecesores[conexion.nodo] = actual; // Guardamos el camino
+                    }
+                }
+            }
+            // Para depurar, mostramos las distancias luego de cada iteración
+            mostrarDistancias();
+        }
+        cout << "Número total de iteraciones: " << iteracion << endl;
+
+        // Reconstruir y mostrar el camino óptimo si existe
+        vector<char> camino = reconstruirCamino();
+        if (!camino.empty())
+        {
+            cout << "Camino más corto: ";
+            for (char n : camino)
+            {
+                cout << n << " ";
+            }
+            cout << endl;
+        }
+        else
+        {
+            cout << "No se encontró un camino al destino." << endl;
+        }
+    }
+
+    // Función principal para lanzar el algoritmo
+    int main()
+    {
+        // Definición del grafo (ejemplo)
+        const map<char, vector<punto>> GRAFO = {
+            {'A', {{'B', 4.0}, {'C', 2.0}}},
+            {'B', {{'A', 4.0}, {'C', 1.0}, {'D', 5.0}}},
+            {'C', {{'A', 2.0}, {'B', 1.0}, {'D', 8.0}, {'E', 10.0}}},
+            {'D', {{'B', 5.0}, {'C', 8.0}, {'E', 2.0}, {'F', 6.0}}},
+            {'E', {{'C', 10.0}, {'D', 2.0}, {'F', 2.0}}},
+            {'F', {{'D', 6.0}, {'E', 2.0}}}};
+
+        // Declaramos nodo inicial y final
+        char ini = 'A';
+        char fin = 'F';
+
+        // Creamos el objeto Dijkstra
+        Dijkstra dijkstra(punto(ini, 0.0), punto(fin, 0.0), GRAFO);
+
+        // Inicialización y ejecución
+        dijkstra.inicializarDistancias();
+        dijkstra.mostrarDistancias();
+        dijkstra.imprimirGrafo();
+        dijkstra.mostrarVisitados();
+        dijkstra.calcularDistancias();
+
+        return 0;
     }
 };
-// Función principal
 
 int main()
 {
-    // Definimos las conexiones entre nodos como constantes
-    const map<char, vector<punto>> GRAFO = {
-        {'A', {{'B', 5.0}, {'C', 2.0}}},             // Nodo A conectado a B y C
-        {'B', {{'A', 5.0}, {'D', 3.0}, {'E', 7.0}}}, // Nodo B conectado a A, D y E
-        {'C', {{'A', 2.0}, {'F', 4.0}}},             // Nodo C conectado a A y F
-        {'D', {{'B', 3.0}, {'E', 1.0}}},             // Nodo D conectado a B y E
-        {'E', {{'B', 7.0}, {'D', 1.0}, {'F', 6.0}}}, // Nodo E conectado a B, D y F
-        {'F', {{'C', 4.0}, {'E', 6.0}}}              // Nodo F conectado a C y E
-    };
-    // Inicializamos variables
-    uint8_t flag_end = 0;
-    char nodo_inicial = 'A'; // Nodo inicial
-    char nodo_final = 'F';   // Nodo final
-    // Creamos un objeto de la clase Dijkstra
-    Dijkstra dijkstra(punto(nodo_inicial, 0.0), punto(nodo_final, 0.0), GRAFO);
-
+    Dijkstra dijkstra(punto('A', 0.0), punto('F', 0.0), {{'A', {{'B', 5.0}, {'C', 2.0}}}, {'B', {{'A', 5.0}, {'D', 3.0}, {'E', 7.0}}}, {'C', {{'A', 2.0}, {'F', 4.0}}}, {'D', {{'B', 3.0}, {'E', 1.0}}}, {'E', {{'B', 7.0}, {'D', 1.0}, {'F', 6.0}}}, {'F', {{'C', 4.0}, {'E', 6.0}}}});
     dijkstra.inicializarDistancias();
     dijkstra.mostrarDistancias();
     dijkstra.imprimirGrafo();
     dijkstra.mostrarVisitados();
     dijkstra.calcularDistancias();
-
     return 0;
 }
