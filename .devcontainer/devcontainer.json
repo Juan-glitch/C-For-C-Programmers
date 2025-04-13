@@ -40,7 +40,8 @@
         "ms-vscode-remote.remote-containers",
         "ms-python.python",
         "ms-vscode.cpptools-extension-pack",
-        "Codeium.codeium"
+        "Codeium.codeium",
+        "bierner.markdown-mermaid"
       ]
     }
   },
