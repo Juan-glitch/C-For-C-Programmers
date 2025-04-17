@@ -353,3 +353,13 @@ int main()
 
     return 0;
 }
+
+// Generador de grafos aleatorio
+// Nuestra funcion tendra que efectuar la gestion de memoria de manera inteligente.
+
+bool **graph;
+srand(time(0)); // seed rand()
+graph = new bool *[size];
+for (int i = 0; i < size; ++i)
+    graph[i] = new bool[size];
+// heap created 2 D array of Bool
