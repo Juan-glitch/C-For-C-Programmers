@@ -1,0 +1,13 @@
+/dijkstra_project
+├── CMakeLists.txt       (opcional si quieres compilar profesionalmente)
+├── README.md            (documentación básica del proyecto)
+├── src/                 (código fuente)
+│   ├── main.cpp         (programa principal, donde usas todo)
+│   ├── graph_generator.cpp  (implementación del generador de grafos)
+│   ├── dijkstra.cpp     (implementación del algoritmo de Dijkstra)
+├── include/             (cabeceras de clases públicas)
+│   ├── graph_generator.h
+│   ├── dijkstra.h
+├── build/               (carpeta donde generarás los binarios, vacía)
+└── tests/               (tests si quieres añadir pruebas en el futuro)
+    └── test_graphs.cpp  (pruebas para grafos y rutas)
