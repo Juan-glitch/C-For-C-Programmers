@@ -1,8 +1,24 @@
 #include "Graph.h"
+#include <stdexcept>
+#include <vector>
+#include <utility>
 using namespace std;
 
 // Default constructor for the Graph class.
 Graph::Graph() = default;
+
+/**
+ * @brief Retrieves the number of nodes in the graph.
+ *
+ * This function returns the size of the adjacency list.
+ *
+ * @return int The number of nodes in the graph.
+ */
+int Graph::size() const
+{
+    // Return the size of the adjacency list.
+    return static_cast<int>(adj_.size());
+}
 
 /**
  * @brief Adds a new node to the graph.
@@ -46,6 +62,34 @@ void Graph::addEdge(int u, int v, double w)
 }
 
 /**
+ * @brief Checks if an edge exists between two nodes.
+ *
+ * This function checks if there is an edge from node u to node v.
+ *
+ * @param origin The index of the first node.
+ * @param destiny The index of the second node.
+ * @return bool True if the edge exists, false otherwise.
+ */
+bool Graph::hasEdge(int origin, int destiny) const
+{
+    // Check if the node indices are within the valid range.
+    if (origin < 0 || origin >= size() || destiny < 0 || destiny >= size())
+    {
+        // Throw an exception if the node indices are out of range.
+        throw out_of_range("Invalid node index");
+    }
+    // Iterate through the adjacency list of node u to check for an edge to v.
+    for (const auto &[neighbor, weight] : adj_[origin])
+    {
+        if (neighbor == destiny)
+        {
+            return true; // Edge exists
+        }
+    }
+    return false; // Edge does not exist
+}
+
+/**
  * @brief Retrieves the neighbors of a node.
  *
  * This function returns a reference to the adjacency list of the node
@@ -64,17 +108,4 @@ const vector<pair<int, double>> &Graph::neighbors(int u) const
     }
     // Return a reference to the adjacency list of the node.
     return adj_[u];
-}
-
-/**
- * @brief Retrieves the number of nodes in the graph.
- *
- * This function returns the size of the adjacency list.
- *
- * @return int The number of nodes in the graph.
- */
-int Graph::size() const
-{
-    // Return the size of the adjacency list.
-    return static_cast<int>(adj_.size());
 }

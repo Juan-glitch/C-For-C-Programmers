@@ -61,5 +61,7 @@ Graph generateRandomGraph(int N, double density, double w_min, double w_max)
                 }
             }
         }
-        return g;
     }
+
+    return g;
+}
