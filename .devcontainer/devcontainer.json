@@ -1,18 +1,14 @@
 {
   // Nombre del entorno que se mostrará en VS Code.
   "name": "C/C++ Development Environment",
-
   // Archivo(s) de Docker Compose que definen los servicios del entorno.
   "dockerComposeFile": [
     "docker-compose.yml"
   ],
-
   // Nombre del servicio definido en docker-compose.yml que se usará como contenedor principal.
   "service": "cpp_dev",
-
   // Directorio de trabajo dentro del contenedor. Aquí se montará tu código.
   "workspaceFolder": "/app",
-
   // Personalizaciones específicas para VS Code cuando se conecta al contenedor.
   "customizations": {
     "vscode": {
@@ -45,17 +41,14 @@
       ]
     }
   },
-
   // Comando que se ejecuta luego de crear el contenedor, por ejemplo para verificar herramientas instaladas.
   "postCreateCommand": "ccache --version && gcc --version",
-
   // Usuario que se utilizará dentro del contenedor.
   "remoteUser": "root",
-
   // Montajes de volúmenes: se vinculan directorios o archivos locales a rutas dentro del contenedor.
   "mounts": [
-    "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",      // Se monta el directorio raíz del proyecto en /app
-    "source=${localWorkspaceFolder}/.env,target=/app/.env,type=bind",                // Se monta el archivo .env (si existe) en /app/.env
-    "source=${localWorkspaceFolder}/src,target=/app/src,type=bind,consistency=cached"  // Se monta la carpeta src en /app/src
+    "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached", // Se monta el directorio raíz del proyecto en /app
+    "source=${localWorkspaceFolder}/.env,target=/app/.env,type=bind", // Se monta el archivo .env (si existe) en /app/.env
+    "source=${localWorkspaceFolder}/src,target=/app/src,type=bind,consistency=cached" // Se monta la carpeta src en /app/src
   ]
 }
