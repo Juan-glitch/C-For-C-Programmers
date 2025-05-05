@@ -14,7 +14,7 @@ int main()
     double density = 0.2, w_min = 1.0, w_max = 10.0;
 
     // Generate a random graph
-    Graph g = generateRandomGraph(N, density, w_min, w_max);
+    Graph g = generateRandomGraph(N, density, w_min, w_max, true);
 
     // Print the graph
     printGraph(g);
