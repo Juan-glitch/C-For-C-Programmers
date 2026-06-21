@@ -1,0 +1,20 @@
+schema_version: 1
+kind: human_plugin_os_devtools
+
+lab:
+  enabled:
+    - "*"
+  evidence_dir: .DevJota/lab
+  auto_build_before_run: true
+  checks:
+    manifest: true
+    build: false
+    test: false
+    debug: true
+    portability: true
+  launchers:
+    vscode: true
+
+tools:
+  registry:
+    - dev_tools/tools

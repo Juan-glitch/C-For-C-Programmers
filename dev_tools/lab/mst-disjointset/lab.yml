@@ -1,0 +1,44 @@
+id: mst-disjointset
+title: MST DisjointSet probe
+language: cpp
+status: experimental
+safety: safe
+entrypoint:
+  file: main.cpp
+  build: cmake-or-g++
+  debug: gdb
+commands:
+  build:
+    argv:
+      - python3
+      - lab_build.py
+      - build
+  compile:
+    argv:
+      - python3
+      - lab_build.py
+      - compile
+  run:
+    argv:
+      - .generated/build/mst-disjointset
+  test:
+    argv:
+      - .generated/build/mst-disjointset
+subtests:
+  union_basics:
+    argv:
+      - .generated/build/mst-disjointset_union_basics
+  cycle_detection:
+    argv:
+      - .generated/build/mst-disjointset_cycle_detection
+  component_merge:
+    argv:
+      - .generated/build/mst-disjointset_component_merge
+debug:
+  type: cppdbg
+  program: .generated/build/mst-disjointset
+  cwd: .
+  stopAtEntry: false
+  MIMode: gdb
+outputs:
+  artifacts_dir: .DevJota/lab/mst-disjointset
