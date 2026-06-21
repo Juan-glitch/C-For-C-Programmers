@@ -1,0 +1,36 @@
+{
+  "id": "{{name}}",
+  "title": "{{name}} C++ probe",
+  "language": "cpp",
+  "status": "experimental",
+  "safety": "safe",
+  "entrypoint": {
+    "file": "main.cpp",
+    "build": "cmake",
+    "debug": "gdb"
+  },
+  "commands": {
+    "build": {
+      "argv": ["cmake", "-S", ".", "-B", ".generated/build", "-DCMAKE_BUILD_TYPE=Debug"]
+    },
+    "compile": {
+      "argv": ["cmake", "--build", ".generated/build"]
+    },
+    "run": {
+      "argv": [".generated/build/{{name}}"]
+    },
+    "test": {
+      "argv": ["ctest", "--test-dir", ".generated/build", "--output-on-failure"]
+    }
+  },
+  "debug": {
+    "type": "cppdbg",
+    "program": ".generated/build/{{name}}",
+    "cwd": ".",
+    "stopAtEntry": false,
+    "MIMode": "gdb"
+  },
+  "outputs": {
+    "artifacts_dir": ".DevJota/lab/{{name}}"
+  }
+}

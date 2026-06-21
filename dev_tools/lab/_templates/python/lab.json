@@ -1,0 +1,28 @@
+{
+  "id": "{{name}}",
+  "title": "{{name}} Python probe",
+  "language": "python",
+  "status": "experimental",
+  "safety": "safe",
+  "entrypoint": {
+    "file": "main.py",
+    "debug": "python"
+  },
+  "commands": {
+    "run": {
+      "argv": ["python3", "main.py"]
+    },
+    "test": {
+      "argv": ["python3", "-m", "pytest", "tests"]
+    }
+  },
+  "debug": {
+    "type": "python",
+    "program": "main.py",
+    "cwd": ".",
+    "stopOnEntry": false
+  },
+  "outputs": {
+    "artifacts_dir": ".DevJota/lab/{{name}}"
+  }
+}

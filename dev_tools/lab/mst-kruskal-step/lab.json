@@ -1,0 +1,65 @@
+{
+  "id": "mst-kruskal-step",
+  "title": "MST Kruskal step probe",
+  "language": "cpp",
+  "status": "experimental",
+  "safety": "safe",
+  "entrypoint": {
+    "file": "main.cpp",
+    "build": "cmake-or-g++",
+    "debug": "gdb"
+  },
+  "commands": {
+    "build": {
+      "argv": [
+        "python3",
+        "lab_build.py",
+        "build"
+      ]
+    },
+    "compile": {
+      "argv": [
+        "python3",
+        "lab_build.py",
+        "compile"
+      ]
+    },
+    "run": {
+      "argv": [
+        ".generated/build/mst-kruskal-step"
+      ]
+    },
+    "test": {
+      "argv": [
+        ".generated/build/mst-kruskal-step"
+      ]
+    }
+  },
+  "subtests": {
+    "accepts_spanning_edges": {
+      "argv": [
+        ".generated/build/mst-kruskal-step_accepts_spanning_edges"
+      ]
+    },
+    "skips_cycle_edges": {
+      "argv": [
+        ".generated/build/mst-kruskal-step_skips_cycle_edges"
+      ]
+    },
+    "mst_cost": {
+      "argv": [
+        ".generated/build/mst-kruskal-step_mst_cost"
+      ]
+    }
+  },
+  "debug": {
+    "type": "cppdbg",
+    "program": ".generated/build/mst-kruskal-step",
+    "cwd": ".",
+    "stopAtEntry": false,
+    "MIMode": "gdb"
+  },
+  "outputs": {
+    "artifacts_dir": ".DevJota/lab/mst-kruskal-step"
+  }
+}

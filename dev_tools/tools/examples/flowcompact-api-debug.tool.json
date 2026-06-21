@@ -1,0 +1,26 @@
+{
+  "id": "flowcompact.api_debug",
+  "title": "FlowCompact API Debug Client",
+  "kind": "debug-client",
+  "status": "candidate",
+  "safety": "safe",
+  "mutates_target": false,
+  "deletes_data": false,
+  "command": {
+    "argv": ["python3", "dev_tools/scripts/flowcompact_api_debug_client.py", "--base-url", "${FLOWCOMPACT_BASE_URL}"]
+  },
+  "env": {
+    "required": ["FLOWCOMPACT_BASE_URL"],
+    "optional": ["FLOWCOMPACT_CONFIG", "DEVTOOLS_CONFIG"]
+  },
+  "outputs": {
+    "artifacts_dir": ".DevJota/flowcompact/debug/api-debug",
+    "json_report": true,
+    "markdown_report": true
+  },
+  "launcher": {
+    "vscode": true,
+    "terminal": true,
+    "agent": true
+  }
+}
