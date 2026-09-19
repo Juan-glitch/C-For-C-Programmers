@@ -1,21 +1,25 @@
 #include "DisjointSet.h"
+#include <cstddef>
 
 DisjointSet::DisjointSet(int size)
-    : parent(size), rank(size, 0)
+    : parent(static_cast<std::size_t>(size)),
+      rank(static_cast<std::size_t>(size), 0)
 {
     for (int i = 0; i < size; ++i)
     {
-        parent[i] = i;
+        parent[static_cast<std::size_t>(i)] = i;
     }
 }
 
 int DisjointSet::find(int node)
 {
-    if (parent[node] != node)
+    // Path compression: make node point directly to its root representative
+    std::size_t idx = static_cast<std::size_t>(node);
+    if (parent[idx] != node)
     {
-        parent[node] = find(parent[node]);
+        parent[idx] = find(parent[idx]);
     }
-    return parent[node];
+    return parent[idx];
 }
 
 bool DisjointSet::unite(int a, int b)
@@ -23,23 +27,28 @@ bool DisjointSet::unite(int a, int b)
     int rootA = find(a);
     int rootB = find(b);
 
+    // If both nodes share the same root, they are already connected -> cycle detected
     if (rootA == rootB)
     {
         return false;
     }
 
-    if (rank[rootA] < rank[rootB])
+    std::size_t idxA = static_cast<std::size_t>(rootA);
+    std::size_t idxB = static_cast<std::size_t>(rootB);
+
+    // Union by rank: attach smaller tree under larger tree to keep depth minimal
+    if (rank[idxA] < rank[idxB])
     {
-        parent[rootA] = rootB;
+        parent[idxA] = rootB;
     }
-    else if (rank[rootA] > rank[rootB])
+    else if (rank[idxA] > rank[idxB])
     {
-        parent[rootB] = rootA;
+        parent[idxB] = rootA;
     }
     else
     {
-        parent[rootB] = rootA;
-        ++rank[rootA];
+        parent[idxB] = rootA;
+        ++rank[idxA];
     }
 
     return true;

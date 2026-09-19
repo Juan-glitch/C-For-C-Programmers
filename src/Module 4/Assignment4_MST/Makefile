@@ -1,10 +1,12 @@
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall
+CXXFLAGS := -std=c++11 -Wall -Wextra -pedantic
 SRC := main_mst.cpp Graph.cpp utils/DisjointSet.cpp
 DEBUG_OUT := build/debug/mst
 RELEASE_OUT := build/release/mst
 
-.PHONY: debug release clean
+.PHONY: all debug release clean
+
+all: release
 
 debug: CXXFLAGS += -g -O0 -DDEBUG
 debug: $(DEBUG_OUT)

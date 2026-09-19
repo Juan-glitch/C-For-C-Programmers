@@ -375,3 +375,5 @@ src/Module 3/prueba_1_dikstra
 
 # DevTools Lab local artifacts
 .DevJota/
+.generated/
+
